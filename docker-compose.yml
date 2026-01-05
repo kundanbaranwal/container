@@ -1,0 +1,40 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  server:
+    build: ./server
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/intern-assignment
+      - JWT_SECRET=secret123
+      - FRONTEND_URL=http://localhost:8080
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+
+  client:
+    build: ./client
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:

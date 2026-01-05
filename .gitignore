@@ -1,0 +1,8 @@
+node_modules
+.env
+dist
+.DS_Store
+DOCKER_GUIDE.md
+DEPLOYMENT.md
+DOCKER_EXPLANATION.md
+
